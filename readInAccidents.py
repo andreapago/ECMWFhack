@@ -1,4 +1,6 @@
 import pandas as pandas
+import pyproj
+from datetime import date, timedelta, datetime, time
 
 
 
@@ -48,7 +50,9 @@ def isCorrect(x):
 
 
 def createDataFrameFromAccFile():
-    dataFrame = pandas.read_csv("data/ExportOngevalsData.csv")
+    fileFirstAttemp = "data/testAccidents.csv"
+    file = "data/accidentsFull.csv"
+    dataFrame = pandas.read_csv(file)
 
     dataFrame["hour"] = dataFrame['Uur'].map(lambda x: convertHour(x))
     dataFrame["day"] = dataFrame["datum"].map(lambda x: str(x)[:2])
@@ -58,12 +62,29 @@ def createDataFrameFromAccFile():
     dataFrame["NoError"] = dataFrame["minuut"].map(lambda x: isCorrect(x))
     timeStampToConvert = dataFrame["year"] + dataFrame["month"] + dataFrame["day"] + dataFrame["hour"] + dataFrame["minute"]
     dataFrame["TimeStamp"] = pandas.to_datetime(timeStampToConvert, format='%Y%b%d%H%M', unit='s')
+    ##definition of the projections
+    wgs84 = pyproj.Proj("+init=EPSG:4326")
+    epsg28992 = pyproj.Proj("+init=EPSG:28992")
+
+
+
+    test = pyproj.transform(epsg28992,wgs84,dataFrame["X"].tolist(),dataFrame["Y"].tolist())
+    dataFrame["lat"] = test[1]
+    dataFrame["lon"] = test[0]
+
+    #print(test)
+
     return(dataFrame)
 
 
 
-df=createDataFrameFromAccFile()
-print(df.year.unique())
+
+
+
+
+#df=createDataFrameFromAccFile()
+#print(df.year)
+#print(len(df))
 
 
 
