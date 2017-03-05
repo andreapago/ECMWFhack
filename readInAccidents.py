@@ -76,33 +76,7 @@ def createDataFrameFromAccFile():
 
     dataFrame["year"] = dataFrame[["year"]].apply(pandas.to_numeric)
 
-    dataFrame = dataFrame[dataFrame.year<2011]
+    dataFrame = dataFrame[dataFrame.year==2006]
 
     return(dataFrame)
 
-
-
-
-
-
-
-#df=createDataFrameFromAccFile()
-#print(df.year)
-#print(len(df))
-
-
-
-
-
-
-
-
-
-
-
-
-
-#print(dataFrame["Niveaukop"])
-
-#print(test)
-#print(pd.DataFrame.head(accidents,4))

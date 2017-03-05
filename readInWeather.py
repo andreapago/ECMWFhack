@@ -8,11 +8,12 @@ import datetime
 year = -9999
 root_grp = None
 
-
 def getMeteoValue(meteoVar,time, latitude, longitude):
     global year
     global root_grp
+    meteoVariables = []
     currentYear = pd.Timestamp(time).year
+    #currentYear = pd.to_datetime(time).dt.year
     #print(currentYear)
     if (currentYear != year):
         year = currentYear
@@ -30,9 +31,11 @@ def getMeteoValue(meteoVar,time, latitude, longitude):
     minLat = min(latVar)
     minLon = min(lonVar)
     cellSizeLat = (max(latVar) - min (latVar))/totalLats
-    cellSizeLon = (max(lonVar) - min(lonVar)) / totalLons
-    cellTileLat = math.ceil((-min(latVar) + latitude)/cellSizeLat)
-    cellTileLon = math.ceil((-min(lonVar) + longitude)/cellSizeLon)
+    cellSizeLat = latVar[1] - latVar[0]
+    cellSizeLon = lonVar[1] - lonVar[0]
+        #(max(lonVar) - min(lonVar)) / totalLons
+    cellTileLat = math.ceil((-minLat + latitude)/cellSizeLat)
+    cellTileLon = math.ceil((-minLon + longitude)/cellSizeLon)
 
     time_var = root_grp.variables['time']
 
@@ -47,8 +50,8 @@ def getMeteoValue(meteoVar,time, latitude, longitude):
 
     #print precipitation[test,cellTileLat,cellTileLon]
 
-    return meteoVariable[test,cellTileLat,cellTileLon]
 
+    return meteoVariable[test, cellTileLat, cellTileLon]
 #print(len(temp))
 #print(temp[0])
 
