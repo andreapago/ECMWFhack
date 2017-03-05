@@ -1,6 +1,7 @@
 from readInAccidents import createDataFrameFromAccFile
 from readInWeather import getMeteoValue
 import numpy as np
+import pickle
 
 def combineSources():
     accidentsDF = createDataFrameFromAccFile()
@@ -25,3 +26,7 @@ def combineSources():
 
 sortedDF = combineSources()
 sortedDF.to_pickle("wrangledData.p")
+
+#with (open("wrangledData.p", "rb")) as openfile:
+           # test22 = pickle.load(openfile)
+           # print test22

@@ -74,6 +74,10 @@ def createDataFrameFromAccFile():
 
     #print(test)
 
+    dataFrame["year"] = dataFrame[["year"]].apply(pandas.to_numeric)
+
+    dataFrame = dataFrame[dataFrame.year<2011]
+
     return(dataFrame)
 
 
